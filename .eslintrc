@@ -1,0 +1,30 @@
+{
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-magic-numbers": [
+      "warn",
+      {
+        "ignore": [0, 1]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.test.ts"],
+      "rules": {
+        "no-magic-numbers": "off"
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+.github/
+cache/
+coverage/
+src/
+
+.env
+.eslintignore
+.eslintrc
+.prettierrc
+
+config.png
+
+jest.config.js
+
+tsconfig.json
