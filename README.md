@@ -2,6 +2,9 @@
 
 > Fetch Notion Pages as JSON
 
+[![NPM Version](http://img.shields.io/npm/v/notion-to-json.svg?style=flat)](https://www.npmjs.org/package/notion-to-json)
+[![Tests](https://github.com/neogeek/notion-to-json/actions/workflows/test.workflow.yml/badge.svg)](https://github.com/neogeek/notion-to-json/actions/workflows/test.workflow.yml)
+
 ## Install
 
 ```bash
@@ -31,8 +34,7 @@ import { getPageSimple } from 'notion-to-json';
 
 ```typescript
 import type { NextPage } from 'next';
-
-import React from 'react';
+import Head from 'next/head';
 
 import sanitizeHtml from 'sanitize-html';
 
@@ -103,17 +105,7 @@ const Block = ({
       </BlockTag>
     );
   } else if (block.type === SupportedBlockTypes.image) {
-    if ((block as any).image && (block as any).image.type === 'external') {
-      return (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={(block as any).image.external.url}
-          alt={(block as any).image.caption}
-        />
-      );
-    }
-
-    return null;
+    return <img src={block.contents as string} />;
   }
 
   return null;
@@ -130,11 +122,17 @@ const NotionPage: NextPage<{
 }> = ({ page }) => {
   return (
     <div>
+      <Head>
+        <title>{page.title}</title>
+      </Head>
+
       <h1>{page.title}</h1>
 
-      {page.blocks.map((block, index) => {
-        return <Block block={block} key={index} />;
-      })}
+      <>
+        {page.blocks.map((block, index) => {
+          return <Block block={block} key={index} />;
+        })}
+      </>
     </div>
   );
 };
