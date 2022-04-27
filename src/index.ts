@@ -1,3 +1,5 @@
+import { get } from './api';
+
 import {
     Block,
     Children,
@@ -9,33 +11,13 @@ import {
     TextBlock
 } from './types';
 
-import fetch from 'node-fetch';
-
-const NOTION_VERSION = '2021-08-16';
-
-const NOTION_API_URL = new URL('https://api.notion.com/v1/');
-
 const getPageRaw = async (
     pageId: string,
     options: GetPageOptions = { api_key: '' }
 ): Promise<{ parent: Page; children: Children }> => {
-    const headers = {
-        'Notion-Version': NOTION_VERSION,
-        Authorization: `Bearer ${options.api_key}`
-    };
-
     return {
-        parent: (await (
-            await fetch(new URL(`pages/${pageId}`, NOTION_API_URL).href, {
-                headers
-            })
-        ).json()) as Page,
-        children: (await (
-            await fetch(
-                new URL(`blocks/${pageId}/children`, NOTION_API_URL).href,
-                { headers }
-            )
-        ).json()) as Children
+        parent: await get<Page>(`pages/${pageId}`, options),
+        children: await get<Children>(`blocks/${pageId}/children`, options)
     };
 };
 
